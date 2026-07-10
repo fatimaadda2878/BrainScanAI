@@ -5,13 +5,13 @@
 
 ---
 
-## 🎯 Problématique
+## Problématique
 
 Comment entraîner un modèle fiable de détection de tumeurs cérébrales quand on ne dispose que de **100 images labellisées** sur 1 506, pour un budget de **300 €** ?
 
 ---
 
-## 📁 Structure du projet
+## Structure du projet
 
 ```
 BrainScanAI/
@@ -23,7 +23,7 @@ BrainScanAI/
 
 ---
 
-## 🗂️ Dataset
+## Dataset
 
 | Caractéristique | Valeur |
 |---|---|
@@ -37,7 +37,7 @@ BrainScanAI/
 
 ---
 
-## 🔄 Pipeline
+##  Pipeline
 
 ```
 Dataset brut (1 506 images)
@@ -70,7 +70,7 @@ Dataset brut (1 506 images)
 
 ---
 
-## 🔬 Extraction de features — RadImageNet
+##  Extraction de features — RadImageNet
 
 J'ai utilisé **RadImageNet**, un ResNet50 pré-entraîné sur **1.35 million d'images médicales** (IRM, scanner CT, échographies), comparé aux features HOG classiques.
 
@@ -81,7 +81,7 @@ J'ai utilisé **RadImageNet**, un ResNet50 pré-entraîné sur **1.35 million d'
 
 ---
 
-## 📊 Résultats du Clustering
+## Résultats du Clustering
 
 | Features | Algo | ARI ↑ | Commentaire |
 |---|---|---|---|
@@ -94,7 +94,7 @@ J'ai utilisé **RadImageNet**, un ResNet50 pré-entraîné sur **1.35 million d'
 
 ---
 
-## 🤖 Comparaison des 3 modèles
+## Comparaison des 3 modèles
 
 | Modèle | Données d'entraînement | Accuracy | Rappel cancer ★ | F1 |
 |---|---|---|---|---|
@@ -108,7 +108,7 @@ J'ai utilisé **RadImageNet**, un ResNet50 pré-entraîné sur **1.35 million d'
 
 ---
 
-## 📈 Prédictions sur le pool non étiqueté
+## Prédictions sur le pool non étiqueté
 
 Après validation du modèle B, prédiction sur les 1 374 images sans label :
 
@@ -123,7 +123,7 @@ Après validation du modèle B, prédiction sur les 1 374 images sans label :
 
 ---
 
-## ⚙️ Technologies utilisées
+## Technologies utilisées
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.x-orange)
@@ -137,7 +137,7 @@ Après validation du modèle B, prédiction sur les 1 374 images sans label :
 
 ---
 
-## 🚀 Passage à l'échelle
+## Passage à l'échelle
 
 Budget : **5 000 €** pour **4 millions d'images**
 
