@@ -17,7 +17,7 @@ Comment entraîner un modèle fiable de détection de tumeurs cérébrales quand
 BrainScanAI/
 │
 ├── 01_exploration_dataset.ipynb     # Exploration et nettoyage du dataset (EDA)
-├── 04_pipeline_radimagenet.ipynb    # Pipeline complet (features + clustering + classification)
+├── 02_pipeline_radimagenet.ipynb    # Pipeline complet (features + clustering + classification)
 └── README.md
 ```
 
