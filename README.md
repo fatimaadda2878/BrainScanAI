@@ -5,25 +5,26 @@
 
 ---
 
-## Problématique
+## 🎯 Problématique
 
 Comment entraîner un modèle fiable de détection de tumeurs cérébrales quand on ne dispose que de **100 images labellisées** sur 1 506, pour un budget de **300 €** ?
 
 ---
 
-## Structure du projet
+## 📁 Structure du projet
 
 ```
 BrainScanAI/
 │
-├── 01_exploration_dataset.ipynb     # Exploration et nettoyage du dataset (EDA)
-├── 02_pipeline_radimagenet.ipynb    # Pipeline complet (features + clustering + classification)
+├── 01_exploration_dataset.ipynb       # Exploration et nettoyage du dataset (EDA)
+├── 02_pipeline_radimagenet.ipynb      # Pipeline complet (features + clustering + classification)
+├── requirements.txt                   # Dépendances Python
 └── README.md
 ```
 
 ---
 
-## Dataset
+## 🗂️ Dataset
 
 | Caractéristique | Valeur |
 |---|---|
@@ -35,16 +36,28 @@ BrainScanAI/
 
 > ⚠️ **Point de vigilance détecté** : 32 images du pool labellisé étaient dupliquées dans le pool non étiqueté → fuite de données potentielle corrigée avant toute modélisation.
 
+> 📥 **Dataset** : disponible sur demande auprès de CurelyticsIA. Placer le fichier `mri_dataset_brain_cancer_oc.zip` à la racine du projet avant d'exécuter les notebooks.
+
 ---
 
-##  Pipeline
+## ⚙️ Installation
+
+```bash
+git clone https://github.com/ton-pseudo/BrainScanAI
+cd BrainScanAI
+pip install -r requirements.txt
+```
+
+---
+
+## 🔄 Pipeline
 
 ```
 Dataset brut (1 506 images)
         │
         ▼
 ┌─────────────────────────┐
-│  1. Exploration & EDA   │  → Nettoyage, dédoublonnage, analyse visuelle
+│  1. Exploration & EDA   │  → Nettoyage, dédoublonnage, CLAHE, analyse visuelle
 └─────────────────────────┘
         │
         ▼
@@ -54,12 +67,12 @@ Dataset brut (1 506 images)
         │
         ▼
 ┌─────────────────────────┐
-│  3. Clustering          │  → K-Means + DBSCAN → pseudo-labels
+│  3. Clustering          │  → K-Means + DBSCAN → pseudo-labels filtrés
 └─────────────────────────┘
         │
         ▼
 ┌─────────────────────────┐
-│  4. Classification CNN  │  → 3 modèles comparés
+│  4. Classification CNN  │  → 3 modèles comparés + early stopping
 └─────────────────────────┘
         │
         ▼
@@ -70,9 +83,9 @@ Dataset brut (1 506 images)
 
 ---
 
-##  Extraction de features — RadImageNet
+## 🔬 Extraction de features — RadImageNet
 
-J'ai utilisé **RadImageNet**, un ResNet50 pré-entraîné sur **1.35 million d'images médicales** (IRM, scanner CT, échographies), comparé aux features HOG classiques.
+J'ai utilisé **RadImageNet**, un ResNet50 pré-entraîné sur **1.35 million d'images médicales** (IRM, scanner CT, échographies), comparé aux features HOG classiques. Une égalisation des histogrammes **CLAHE** est appliquée en amont pour améliorer le contraste des images.
 
 | Méthode | Dimension | Pertinence médicale |
 |---|---|---|
@@ -81,49 +94,51 @@ J'ai utilisé **RadImageNet**, un ResNet50 pré-entraîné sur **1.35 million d'
 
 ---
 
-## Résultats du Clustering
+## 📊 Résultats du Clustering
 
 | Features | Algo | ARI ↑ | Commentaire |
 |---|---|---|---|
-| RadImageNet | K-Means | -0.009 | Structure non alignée avec les labels |
-| RadImageNet | DBSCAN | 0.107 | 2 clusters à eps restreint |
-| **HOG** | **K-Means** | **0.186 ★** | **Meilleur ARI → retenu pour pseudo-labels** |
-| HOG | DBSCAN | ~0.017 | Espace trop dense |
+| RadImageNet | K-Means | -0.001 | Structure non alignée avec les labels |
+| RadImageNet | DBSCAN | 0.019 | 5 clusters, trop de bruit |
+| **HOG** | **K-Means** | **0.198 ★** | **Meilleur ARI → retenu pour pseudo-labels** |
+| HOG | DBSCAN | 0.032 | Espace trop dense |
 
-> L'ARI est calculé uniquement sur les 100 images labellisées — les seules dont on connaît le vrai label.
+> L'ARI est calculé uniquement sur les 70 images de train — les 30 images de test sont strictement isolées.
+
+> 🔍 **Filtrage des pseudo-labels** : seules les 561 images avec une confiance ≥ 0.60 sont conservées pour l'entraînement du modèle A (seuil retenu car la confiance maximale du classifieur SVC est 0.78 avec 70 images de train).
 
 ---
 
-## Comparaison des 3 modèles
+## 🤖 Comparaison des 3 modèles
 
 | Modèle | Données d'entraînement | Accuracy | Rappel cancer ★ | F1 |
 |---|---|---|---|---|
-| A — Faible seul | 1 374 pseudo-labels | 0.633 | 0.467 ✗ | 0.560 |
-| **B — Semi-supervisé** | **Faible → Fort (finetune)** | **0.733** | **0.800 ✓** | **0.750 ✓** |
-| C — Fort seul | 70 images (vrais labels) | 0.500 | 1.000 | 0.667 |
+| A — Faible seul | 561 pseudo-labels filtrés | 0.433 | 0.533 ✗ | 0.485 |
+| **B — Semi-supervisé** | **Faible → Fort (finetune)** | **0.767** | **0.867 ✓** | **0.788 ✓** |
+| C — Fort seul | 70 images (vrais labels) | 0.667 | 1.000 ✓ | 0.750 |
 
 > ★ **Le rappel sur la classe cancer est la métrique prioritaire** : un faux négatif (cancer non détecté) est bien plus grave qu'un faux positif dans un contexte de dépistage médical.
 
-**→ Le modèle B (semi-supervisé) est le meilleur compromis** : il exploite les 1 374 images non étiquetées pour améliorer ses performances par rapport au supervisé seul.
+**→ Le modèle B (semi-supervisé) est le meilleur compromis** : meilleure accuracy (0.767) et meilleur F1 (0.788), avec un rappel cancer de 0.867.
 
 ---
 
-## Prédictions sur le pool non étiqueté
+## 📈 Prédictions sur le pool non étiqueté
 
 Après validation du modèle B, prédiction sur les 1 374 images sans label :
 
 | Label prédit | Nombre d'images |
 |---|---|
-| Cancer | 1 027 |
-| Normal | 347 |
-| Confiance moyenne | 0.680 |
-| Images à faible confiance (< 0.70) | 883 |
+| Cancer | 1 327 |
+| Normal | 47 |
+| Confiance moyenne | 0.795 |
+| Images à faible confiance (< 0.70) | 83 |
 
-> Les 883 images à faible confiance sont à prioriser pour une validation médicale humaine.
+> Les 83 images à faible confiance sont à prioriser pour une validation médicale humaine.
 
 ---
 
-## Technologies utilisées
+## 🛠️ Technologies utilisées
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.x-orange)
@@ -131,13 +146,14 @@ Après validation du modèle B, prédiction sur les 1 374 images sans label :
 
 - **PyTorch / Torchvision** — Deep learning & CNN
 - **RadImageNet** — Backbone médical pré-entraîné (via HuggingFace Hub)
+- **OpenCV (CLAHE)** — Égalisation adaptative des histogrammes
 - **scikit-learn** — Clustering, métriques, PCA, t-SNE
 - **Pandas / NumPy / Matplotlib** — Manipulation de données et visualisation
 - **scikit-image (HOG)** — Features classiques
 
 ---
 
-## Passage à l'échelle
+## 🚀 Passage à l'échelle
 
 Budget : **5 000 €** pour **4 millions d'images**
 
@@ -159,6 +175,7 @@ Coût autorisé par image : `5 000 € ÷ 4 000 000 = 0.00125 € / image`
 - Jeu de test de seulement **30 images** — résultats indicatifs, à confirmer sur un jeu plus large
 - Dataset hétérogène : mélange de plans de coupe (axial/sagittal/coronal) et possible mélange IRM/scanner
 - Pas de métadonnées DICOM disponibles pour identifier les modalités
+- Confiance maximale des pseudo-labels limitée à 0.78 (classifieur SVC entraîné sur 70 images seulement)
 
 ---
 
