@@ -43,7 +43,7 @@ BrainScanAI/
 ## Installation
 
 ```bash
-git clone <URL_DU_DEPOT>
+git clone (https://github.com/fatimaadda2878/BrainScanAI)
 cd BrainScanAI
 pip install -r requirements.txt
 ```
