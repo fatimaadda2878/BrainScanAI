@@ -5,13 +5,13 @@
 
 ---
 
-## 🎯 Problématique
+## Problématique
 
 Comment entraîner un modèle fiable de détection de tumeurs cérébrales quand on ne dispose que de **100 images labellisées** sur 1 506, pour un budget de **300 €** ?
 
 ---
 
-## 📁 Structure du projet
+## Structure du projet
 
 ```
 BrainScanAI/
@@ -24,7 +24,7 @@ BrainScanAI/
 
 ---
 
-## 🗂️ Dataset
+## Dataset
 
 | Caractéristique | Valeur |
 |---|---|
@@ -34,13 +34,13 @@ BrainScanAI/
 | Format | JPEG 512×512 |
 | Type | IRM cérébrales |
 
-> ⚠️ **Point de vigilance détecté** : 32 images du pool labellisé étaient dupliquées dans le pool non étiqueté → fuite de données potentielle corrigée avant toute modélisation.
+> **Point de vigilance détecté** : 32 images du pool labellisé étaient dupliquées dans le pool non étiqueté → fuite de données potentielle corrigée avant toute modélisation.
 
-> 📥 **Dataset** : disponible sur demande auprès de CurelyticsIA. Placer le fichier `mri_dataset_brain_cancer_oc.zip` à la racine du projet avant d'exécuter les notebooks.
+> **Dataset** : disponible sur demande auprès de CurelyticsIA. Placer le fichier `mri_dataset_brain_cancer_oc.zip` à la racine du projet avant d'exécuter les notebooks.
 
 ---
 
-## ⚙️ Installation
+## Installation
 
 ```bash
 git clone <URL_DU_DEPOT>
@@ -50,7 +50,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🔄 Pipeline
+## Pipeline
 
 ```
 Dataset brut (1 506 images)
@@ -83,7 +83,7 @@ Dataset brut (1 506 images)
 
 ---
 
-## 🔬 Extraction de features — RadImageNet
+## Extraction de features — RadImageNet
 
 J'ai utilisé **RadImageNet**, un ResNet50 pré-entraîné sur **1.35 million d'images médicales** (IRM, scanner CT, échographies), comparé aux features HOG classiques. Une égalisation des histogrammes **CLAHE** est appliquée en amont pour améliorer le contraste des images.
 
@@ -96,7 +96,7 @@ J'ai utilisé **RadImageNet**, un ResNet50 pré-entraîné sur **1.35 million d'
 
 ---
 
-## 📊 Résultats du Clustering
+## Résultats du Clustering
 
 | Features | Algo | ARI ↑ | Commentaire |
 |---|---|---|---|
@@ -123,7 +123,7 @@ Un classifieur SVC calibré estime la confiance de chaque pseudo-label. Un balay
 
 ---
 
-## 🤖 Comparaison des 3 modèles
+## Comparaison des 3 modèles
 
 | Modèle | Données d'entraînement | Accuracy | Rappel cancer ★ | F1 |
 |---|---|---|---|---|
@@ -139,7 +139,7 @@ Un classifieur SVC calibré estime la confiance de chaque pseudo-label. Un balay
 
 ---
 
-## 📈 Prédictions sur le pool non étiqueté
+## Prédictions sur le pool non étiqueté
 
 Après validation du modèle B, prédiction sur les 1 374 images sans label :
 
@@ -154,7 +154,7 @@ Après validation du modèle B, prédiction sur les 1 374 images sans label :
 
 ---
 
-## 🛠️ Technologies utilisées
+## Technologies utilisées
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.x-orange)
@@ -169,7 +169,7 @@ Après validation du modèle B, prédiction sur les 1 374 images sans label :
 
 ---
 
-## 🚀 Passage à l'échelle
+## Passage à l'échelle
 
 Budget : **5 000 €** pour **4 millions d'images**
 
