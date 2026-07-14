@@ -133,7 +133,7 @@ Un classifieur SVC calibré (entraîné sur les images de train uniquement) esti
 
 > ★ **Le rappel sur la classe cancer est la métrique prioritaire** : un faux négatif (cancer non détecté) est bien plus grave qu'un faux positif dans un contexte de dépistage médical.
 
-**Analyse** : après correction de la méthodologie (séparation stricte train/validation/test), les modèles B et C obtiennent des performances très proches. Le semi-supervisé n'apporte pas de gain systématique sur ce dataset — ce qui s'explique par la petite taille du jeu de test (30 images) et par le fait que RadImageNet, déjà performant sur images médicales, laisse peu de marge au pré-entraînement faible. L'écart entre B et C se joue sur un seul patient (sur 15), ce qui n'est pas statistiquement significatif.
+**Analyse** : après correction de la méthodologie (séparation stricte train/validation/test), les modèles B et C obtiennent des performances très proches. Le semi-supervisé n'apporte pas de gain systématique sur ce dataset, ce qui s'explique par la petite taille du jeu de test (30 images) et par le fait que RadImageNet, déjà performant sur images médicales, laisse peu de marge au pré-entraînement faible. L'écart entre B et C se joue sur un seul patient (sur 15), ce qui n'est pas statistiquement significatif.
 
 > L'early stopping est basé sur la **loss de validation** (14 images), avec restauration automatique des meilleurs poids.
 
