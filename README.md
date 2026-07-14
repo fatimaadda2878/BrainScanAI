@@ -5,13 +5,13 @@
 
 ---
 
-## 🎯 Problématique
+## Problématique
 
 Comment entraîner un modèle fiable de détection de tumeurs cérébrales quand on ne dispose que de **100 images labellisées** sur 1 506, pour un budget de **300 €** ?
 
 ---
 
-## 📁 Structure du projet
+## Structure du projet
 
 ```
 BrainScanAI/
@@ -24,7 +24,7 @@ BrainScanAI/
 
 ---
 
-## 🗂️ Dataset
+## Dataset
 
 | Caractéristique | Valeur |
 |---|---|
@@ -34,23 +34,23 @@ BrainScanAI/
 | Format | JPEG 512×512 |
 | Type | IRM cérébrales |
 
-> ⚠️ **Point de vigilance détecté** : 32 images du pool labellisé étaient dupliquées dans le pool non étiqueté → fuite de données potentielle corrigée avant toute modélisation.
+>  **Point de vigilance détecté** : 32 images du pool labellisé étaient dupliquées dans le pool non étiqueté → fuite de données potentielle corrigée avant toute modélisation.
 
-> 📥 **Dataset** : disponible sur demande auprès de CurelyticsIA. Placer le fichier `mri_dataset_brain_cancer_oc.zip` à la racine du projet avant d'exécuter les notebooks.
+> **Dataset** : disponible sur demande auprès de CurelyticsIA. Placer le fichier `mri_dataset_brain_cancer_oc.zip` à la racine du projet avant d'exécuter les notebooks.
 
 ---
 
-## ⚙️ Installation
+## Installation
 
+git clone https://github.com/fatimaadda2878/BrainScanAI
 ```bash
-git clone <URL_DU_DEPOT>
 cd BrainScanAI
 pip install -r requirements.txt
 ```
 
 ---
 
-## 🔄 Pipeline
+## Pipeline
 
 ```
 Dataset brut (1 506 images)
@@ -96,7 +96,7 @@ J'ai utilisé **RadImageNet**, un ResNet50 pré-entraîné sur **1.35 million d'
 
 ---
 
-## 🔒 Séparation stricte des données
+## Séparation stricte des données
 
 Pour garantir des métriques fiables, les données sont séparées dès le départ :
 
@@ -108,7 +108,7 @@ Pour garantir des métriques fiables, les données sont séparées dès le dépa
 
 ---
 
-## 📊 Résultats du Clustering
+## Résultats du Clustering
 
 | Features | Algo | ARI ↑ | Commentaire |
 |---|---|---|---|
@@ -123,7 +123,7 @@ Un classifieur SVC calibré (entraîné sur les images de train uniquement) esti
 
 ---
 
-## 🤖 Comparaison des 3 modèles
+## Comparaison des 3 modèles
 
 | Modèle | Données d'entraînement | Accuracy | Rappel cancer ★ | F1 |
 |---|---|---|---|---|
@@ -139,7 +139,7 @@ Un classifieur SVC calibré (entraîné sur les images de train uniquement) esti
 
 ---
 
-## 📈 Prédictions sur le pool non étiqueté
+## Prédictions sur le pool non étiqueté
 
 Après validation, prédiction du modèle sur les 1 374 images sans label :
 
@@ -154,7 +154,7 @@ Après validation, prédiction du modèle sur les 1 374 images sans label :
 
 ---
 
-## 🛠️ Technologies utilisées
+## Technologies utilisées
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.x-orange)
@@ -169,7 +169,7 @@ Après validation, prédiction du modèle sur les 1 374 images sans label :
 
 ---
 
-## 🚀 Passage à l'échelle
+## Passage à l'échelle
 
 Budget : **5 000 €** pour **4 millions d'images**
 
