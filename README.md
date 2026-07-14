@@ -191,7 +191,6 @@ Coût autorisé par image : `5 000 € ÷ 4 000 000 = 0.00125 € / image`
 - Jeu de test de seulement **30 images** — résultats indicatifs, à confirmer sur un jeu plus large
 - Jeu de validation de **14 images** — l'early stopping est sensible à cette petite taille (le modèle C a nécessité une patience plus élevée pour converger)
 - Dataset hétérogène : mélange de plans de coupe (axial/sagittal/coronal) et possible mélange IRM/scanner
-- Pas de métadonnées DICOM disponibles pour identifier les modalités
 - Le gain du semi-supervisé n'est pas significatif sur ce dataset — un jeu de test plus grand serait nécessaire pour conclure
 
 ---
