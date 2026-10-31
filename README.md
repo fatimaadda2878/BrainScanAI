@@ -9,6 +9,8 @@
 
 Comment entraîner un modèle fiable de détection de tumeurs cérébrales quand on ne dispose que de **100 images labellisées** sur 1 506, pour un budget de **300 €** ?
 
+![Rappel sur la classe cancer et matrices de confusion des 3 modèles (jeu de test, 30 images)](assets/resultats_comparaison.png)
+
 ---
 
 ## Structure du projet
@@ -18,7 +20,9 @@ BrainScanAI/
 │
 ├── 01_exploration_dataset.ipynb       # Exploration et nettoyage du dataset (EDA)
 ├── 02_pipeline_radimagenet.ipynb      # Pipeline complet (features + clustering + classification)
+├── assets/                            # Figures de résultats affichées dans ce README
 ├── requirements.txt                   # Dépendances Python
+├── LICENSE
 └── README.md
 ```
 
@@ -136,6 +140,8 @@ Un classifieur SVC calibré (entraîné sur les images de train uniquement) esti
 **Analyse** : après correction de la méthodologie (séparation stricte train/validation/test), les modèles B et C obtiennent des performances très proches. Le semi-supervisé n'apporte pas de gain systématique sur ce dataset, ce qui s'explique par la petite taille du jeu de test (30 images) et par le fait que RadImageNet, déjà performant sur images médicales, laisse peu de marge au pré-entraînement faible. L'écart entre B et C se joue sur un seul patient (sur 15), ce qui n'est pas statistiquement significatif.
 
 > L'early stopping est basé sur la **loss de validation** (14 images), avec restauration automatique des meilleurs poids.
+
+![Courbes d'apprentissage des 3 modèles : loss d'entraînement, loss et F1 de validation](assets/courbes_apprentissage.png)
 
 ---
 

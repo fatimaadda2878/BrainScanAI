@@ -1,0 +1,26 @@
+# Données (non versionnées : disponibles sur demande)
+mri_dataset_brain_cancer_oc/
+*.zip
+
+# Artefacts générés par les notebooks
+*.npy
+*.pt
+*.pth
+manifest_*.csv
+predictions_*.csv
+
+# Figures générées à la racine (les figures du README sont dans assets/)
+/*.png
+
+# Python / Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+
+# Systèmes
+.DS_Store
+Thumbs.db
+desktop.ini
